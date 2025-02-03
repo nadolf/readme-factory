@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import "../styles/ReadmeGenerator.css";
 import ReactMarkdown from "react-markdown";
 import {
   FaPlus,
   FaTrash,
-  FaXmark,
   FaAngleDown,
   FaAngleUp,
 } from "react-icons/fa6";
@@ -113,37 +113,6 @@ export default function ReadmeGenerator() {
     return markdown;
   };
 
-  // Generate non-markdown preview
-  const generatePreview = () => {
-    let preview = `# ${
-      sections.find((section) => section.type === "title")?.content || ""
-    }\n\n`;
-
-    sections.forEach((section) => {
-      switch (section.type) {
-        case "description":
-          preview += `## Description\n${section.content}\n\n`;
-          break;
-        case "installation":
-          preview += `## Installation\n${section.content}\n\n`;
-          break;
-        case "usage":
-          preview += `## Usage\n${section.content}\n\n`;
-          break;
-        case "license":
-          preview += `## License\n${section.content}\n\n`;
-          break;
-        case "contributing":
-          preview += `## Contributing\n${section.content}\n\n`;
-          break;
-        default:
-          break;
-      }
-    });
-
-    return preview;
-  };
-
   // Handle markdown download
   const downloadMarkdown = () => {
     const markdown = generateMarkdown();
@@ -166,35 +135,29 @@ export default function ReadmeGenerator() {
     <div style={{ padding: "20px" }}>
       <GeneratorNav />
       <div>
-        <button onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
-          <FaPlus />
+        <button
+          className="add-button"
+          onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+        >
+          <FaPlus size={30} />
         </button>
-        {isDropdownVisible && (
-          <div
-            style={{
-              marginTop: "10px",
-              padding: "10px",
-              border: "1px solid #ddd",
-              display: "inline-block",
-            }}
-          >
-            <select
-              onChange={(e) => addSection(e.target.value)}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select a section to add
-              </option>
-              {availableSections
-                .filter((section) => !sections.find((s) => s.type === section))
-                .map((section) => (
-                  <option key={section} value={section}>
-                    {section.charAt(0).toUpperCase() + section.slice(1)}
-                  </option>
-                ))}
-            </select>
-          </div>
-        )}
+
+        <div
+          className={`dropdown ${isDropdownVisible ? "show" : ""}`}
+          style={{ marginTop: "10px", padding: "10px", display: "inline-block"}}
+        >
+          {availableSections
+            .filter((section) => !sections.find((s) => s.type === section))
+            .map((section) => (
+              <div
+                key={section}
+                onClick={() => addSection(section)}
+                className="dropdown-options"
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </div>
+            ))}
+        </div>
       </div>
 
       {sections.map((section, index) => (
@@ -204,6 +167,7 @@ export default function ReadmeGenerator() {
             margin: "10px 0",
             border: "1px solid #ddd",
             padding: "10px",
+            position: "relative",
           }}
         >
           <label>
@@ -234,6 +198,7 @@ export default function ReadmeGenerator() {
           </div>
         </div>
       ))}
+      
       <div>
         <h2>Markdown:</h2>
         <pre>{generateMarkdown()}</pre>
@@ -241,20 +206,11 @@ export default function ReadmeGenerator() {
 
       <div>
         <h2>Preview</h2>
-        <div
-          style={{
-            padding: "10px",
-            border: "1px solid #ddd",
-            whiteSpace: "pre-wrap",
-            backgroundColor: "#f6f8fa",
-            borderRadius: "5px",
-            wordBreak: "break-word",
-            maxWidth: "800px",
-          }}
-        >
+        <div className="preview-area">
           <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
         </div>
       </div>
+
       <div>
         <button onClick={downloadMarkdown}>Download README.md</button>
         <button onClick={copyToClipboard}>Copy Markdown</button>
