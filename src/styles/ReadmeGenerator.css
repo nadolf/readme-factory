@@ -1,85 +1,80 @@
+.generator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-top: 20px;
+}
+
+.sidebar {
+  flex: 0 0 10%;
+  position: relative;
+}
+
 .add-button {
   border-radius: 50%;
   padding: 20px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.add-button:hover {
-  background-color: #007bff;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.add-button:focus {
-  outline: none;
 }
 
 .dropdown {
   position: absolute;
-  top: 160px;
-  left: 0;
-  background-color: white;
+  top: 80px;
+  left: 10px;
+  background: white;
   border: 1px solid #ddd;
   padding: 10px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: auto;
-  min-width: 200px;
-  border-radius: 4px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.3s, transform 0.3s, visibility 0s linear 0.3s;
+  width: 150px;
 }
 
-.dropdown.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-options {
-  display: block;
-  width: 100%;
-  padding: 8px 0px;
-  text-align: center;
-  margin-bottom: 5px;
+.dropdown-option {
+  padding: 10px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 20;
-}
-.dropdown-options:hover {
-  color: #007bff;
 }
 
-.preview-area {
+.sections-container {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.section-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.preview-container {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+}
+
+.active-tab {
+  color: blue;
+}
+
+.markdown-area, .preview-area {
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  word-break: break-all;
-  max-width: 800px;
 }
 
-button {
-  display: block;
-  padding: 8px;
-  color: #000;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  text-align: left;
-  margin-bottom: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #e0e0e0;
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }

@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import "../styles/ReadmeGenerator.css";
 import ReactMarkdown from "react-markdown";
-import {
-  FaPlus,
-  FaTrash,
-  FaAngleDown,
-  FaAngleUp,
-} from "react-icons/fa6";
-import GeneratorNav from "../components/GeneratorNav";
+import { FaPlus, FaTrash, FaAngleUp, FaAngleDown } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
+import GeneratorNav from "../components/GeneratorNav";
 
 export default function ReadmeGenerator() {
   const [sections, setSections] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState("markdown");
 
   const availableSections = [
     "title",
@@ -23,7 +19,14 @@ export default function ReadmeGenerator() {
     "contributing",
   ];
 
-  // Add a new section if not already added
+  const sectionTemplates = {
+    description: "Provide a description of your project.",
+    installation: "Provide installation instructions.",
+    usage: "Provide usage instructions.",
+    license: "Specify the license for your project.",
+    contributing: "Describe how others can contribute to your project.",
+  };
+
   const addSection = (sectionType) => {
     if (sections.find((section) => section.type === sectionType)) {
       alert(
@@ -36,84 +39,62 @@ export default function ReadmeGenerator() {
 
     const newSection = {
       type: sectionType,
-      content: "", // Empty content initially
+      content: sectionTemplates[sectionType] || "",
     };
     setSections([...sections, newSection]);
-    setIsDropdownVisible(false); // Hide dropdown after adding
+    setIsDropdownVisible(false);
   };
 
-  // Delete a section
-  const deleteSection = (index) => {
-    const updatedSections = sections.filter((_, i) => i !== index);
-    setSections(updatedSections);
-  };
+  const deleteSection = (index) =>
+    setSections(sections.filter((_, i) => i !== index));
 
-  // Reset a section to its original empty content
   const resetSection = (index) => {
     const updatedSections = [...sections];
-    updatedSections[index].content = "";
+    updatedSections[index].content =
+      sectionTemplates[updatedSections[index].type] || "";
     setSections(updatedSections);
   };
 
-  // Update the content of a section
   const updateSection = (index, content) => {
     const updatedSections = [...sections];
     updatedSections[index].content = content;
     setSections(updatedSections);
   };
 
-  // Move a section up in the order
   const moveSectionUp = (index) => {
     if (index === 0) return;
     const updatedSections = [...sections];
-    const temp = updatedSections[index];
-    updatedSections[index] = updatedSections[index - 1];
-    updatedSections[index - 1] = temp;
+    [updatedSections[index], updatedSections[index - 1]] = [
+      updatedSections[index - 1],
+      updatedSections[index],
+    ];
     setSections(updatedSections);
   };
 
-  // Move a section down in the order
   const moveSectionDown = (index) => {
     if (index === sections.length - 1) return;
     const updatedSections = [...sections];
-    const temp = updatedSections[index];
-    updatedSections[index] = updatedSections[index + 1];
-    updatedSections[index + 1] = temp;
+    [updatedSections[index], updatedSections[index + 1]] = [
+      updatedSections[index + 1],
+      updatedSections[index],
+    ];
     setSections(updatedSections);
   };
 
-  // Generate markdown based on sections
   const generateMarkdown = () => {
     let markdown = `# ${
       sections.find((section) => section.type === "title")?.content || ""
     }\n\n`;
 
     sections.forEach((section) => {
-      switch (section.type) {
-        case "description":
-          markdown += `## Description\n${section.content}\n\n`;
-          break;
-        case "installation":
-          markdown += `## Installation\n\`\`\`\n${section.content}\n\`\`\`\n\n`;
-          break;
-        case "usage":
-          markdown += `## Usage\n${section.content}\n\n`;
-          break;
-        case "license":
-          markdown += `## License\n${section.content}\n\n`;
-          break;
-        case "contributing":
-          markdown += `## Contributing\n${section.content}\n\n`;
-          break;
-        default:
-          break;
-      }
+      markdown += `## ${
+        section.type.charAt(0).toUpperCase() + section.type.slice(1)
+      }\n${section.content}\n\n`;
     });
 
     return markdown;
   };
 
-  // Handle markdown download
   const downloadMarkdown = () => {
     const markdown = generateMarkdown();
     const blob = new Blob([markdown], { type: "text/markdown" });
@@ -123,97 +104,110 @@ export default function ReadmeGenerator() {
     link.click();
   };
 
-  // Copy the generated markdown to clipboard
   const copyToClipboard = () => {
-    const markdown = generateMarkdown();
-    navigator.clipboard.writeText(markdown).then(() => {
-      alert("Markdown copied to clipboard!");
-    });
+    navigator.clipboard
+      .writeText(generateMarkdown())
+      .then(() => alert("Markdown copied to clipboard!"));
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <GeneratorNav />
-      <div>
-        <button
-          className="add-button"
-          onClick={() => setIsDropdownVisible(!isDropdownVisible)}
-        >
-          <FaPlus size={30} />
-        </button>
 
-        <div
-          className={`dropdown ${isDropdownVisible ? "show" : ""}`}
-          style={{ marginTop: "10px", padding: "10px", display: "inline-block"}}
-        >
-          {availableSections
-            .filter((section) => !sections.find((s) => s.type === section))
-            .map((section) => (
-              <div
-                key={section}
-                onClick={() => addSection(section)}
-                className="dropdown-options"
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
+      <div className="generator-container">
+        <div className="content-wrapper">
+          <div className="sidebar">
+            <button
+              className="add-button"
+              onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+            >
+              <FaPlus size={30} />
+            </button>
+
+            {isDropdownVisible && (
+              <div className="dropdown">
+                {availableSections
+                  .filter(
+                    (section) => !sections.some((s) => s.type === section)
+                  )
+                  .map((section) => (
+                    <div
+                      key={section}
+                      onClick={() => addSection(section)}
+                      className="dropdown-option"
+                    >
+                      {section.charAt(0).toUpperCase() + section.slice(1)}
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <div className="sections-container">
+            {sections.map((section, index) => (
+              <div key={index} className="section-card">
+                <label>
+                  {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
+                  <textarea
+                    value={section.content}
+                    onChange={(e) => updateSection(index, e.target.value)}
+                  />
+                </label>
+
+                <div className="section-actions">
+                  <button onClick={() => resetSection(index)}>
+                    <VscDebugRestart />
+                  </button>
+                  <button onClick={() => deleteSection(index)}>
+                    <FaTrash />
+                  </button>
+                  <button
+                    onClick={() => moveSectionUp(index)}
+                    disabled={index === 0}
+                  >
+                    <FaAngleUp />
+                  </button>
+                  <button
+                    onClick={() => moveSectionDown(index)}
+                    disabled={index === sections.length - 1}
+                  >
+                    <FaAngleDown />
+                  </button>
+                </div>
               </div>
             ))}
-        </div>
-      </div>
+          </div>
 
-      {sections.map((section, index) => (
-        <div
-          key={index}
-          style={{
-            margin: "10px 0",
-            border: "1px solid #ddd",
-            padding: "10px",
-            position: "relative",
-          }}
-        >
-          <label>
-            {section.type.charAt(0).toUpperCase() + section.type.slice(1)}:
-            <textarea
-              value={section.content}
-              onChange={(e) => updateSection(index, e.target.value)}
-              style={{ width: "100%", height: "100px" }}
-            />
-          </label>
+          <div className="preview-container">
+            <div className="tabs">
+              <h3
+                className={activeTab === "markdown" ? "active-tab" : ""}
+                onClick={() => setActiveTab("markdown")}
+              >
+                Markdown
+              </h3>
+              <h3
+                className={activeTab === "preview" ? "active-tab" : ""}
+                onClick={() => setActiveTab("preview")}
+              >
+                Preview
+              </h3>
+            </div>
 
-          <div style={{ marginTop: "10px" }}>
-            <button onClick={() => resetSection(index)}>
-              <VscDebugRestart />
-            </button>
-            <button onClick={() => deleteSection(index)}>
-              <FaTrash />
-            </button>
-            <button onClick={() => moveSectionUp(index)} disabled={index === 0}>
-              <FaAngleUp />
-            </button>
-            <button
-              onClick={() => moveSectionDown(index)}
-              disabled={index === sections.length - 1}
-            >
-              <FaAngleDown />
-            </button>
+            {activeTab === "markdown" ? (
+              <pre className="markdown-area">{generateMarkdown()}</pre>
+            ) : (
+              <div className="preview-area">
+                <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
+              </div>
+            )}
+
+            <div className="button-container">
+              <button onClick={downloadMarkdown}>Download README.md</button>
+              <button onClick={copyToClipboard}>Copy Markdown</button>
+            </div>
           </div>
         </div>
-      ))}
-      
-      <div>
-        <h2>Markdown:</h2>
-        <pre>{generateMarkdown()}</pre>
-      </div>
-
-      <div>
-        <h2>Preview</h2>
-        <div className="preview-area">
-          <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
-        </div>
-      </div>
-
-      <div>
-        <button onClick={downloadMarkdown}>Download README.md</button>
-        <button onClick={copyToClipboard}>Copy Markdown</button>
       </div>
     </div>
   );
