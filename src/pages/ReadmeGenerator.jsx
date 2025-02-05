@@ -149,7 +149,7 @@ export default function ReadmeGenerator() {
                 Preview
               </h3>
             </div>
-
+            <div className="preview-content">
             {activeTab === "markdown" ? (
               <pre className="markdown-area">{generateMarkdown()}</pre>
             ) : (
@@ -157,7 +157,7 @@ export default function ReadmeGenerator() {
                 <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
               </div>
             )}
-
+            </div>
             <div className="button-container">
               <button onClick={downloadMarkdown}>Download README.md</button>
               <button onClick={copyToClipboard}>Copy Markdown</button>
