@@ -23,18 +23,6 @@
   transition: background-color 0.3s ease;
 }
 
-.generator-nav-icons:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.generator-nav-icons svg {
-  transition: transform 0.3s ease;
-}
-
-.generator-nav-icons:focus {
-  outline: 2px solid #4caf50;
-}
-
 body.light {
   background-color: #fff;
   color: #000;
@@ -45,4 +33,18 @@ body.dark {
   background-color: #222222;
   color: #fff;
   transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.nav-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-right: 15px;
+}
+
+.nav-button:hover {
+  background-color: #0568d1;
+  transition: 0.5s;
 }

@@ -10,13 +10,7 @@ export default function ReadmeGenerator() {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("markdown");
 
-  const availableSections = [
-    "description",
-    "installation",
-    "usage",
-    "license",
-    "contributing",
-  ];
+  const availableSections = ["description", "installation", "usage", "license", "contributing"];
 
   const sectionTemplates = {
     description: "Provide a description of your project.",
@@ -31,7 +25,6 @@ export default function ReadmeGenerator() {
       alert(`${sectionType.charAt(0).toUpperCase() + sectionType.slice(1)} section already added.`);
       return;
     }
-
     const newSection = { type: sectionType, content: sectionTemplates[sectionType] || "" };
     setSections([...sections, newSection]);
     setIsDropdownVisible(false);
@@ -92,7 +85,7 @@ export default function ReadmeGenerator() {
 
   return (
     <div>
-      <GeneratorNav />
+      <GeneratorNav onDownload={downloadMarkdown} onCopy={copyToClipboard} />
 
       <div className="generator-container">
         <div className="content-wrapper">
@@ -150,17 +143,13 @@ export default function ReadmeGenerator() {
               </h3>
             </div>
             <div className="preview-content">
-            {activeTab === "markdown" ? (
-              <pre className="markdown-area">{generateMarkdown()}</pre>
-            ) : (
-              <div className="preview-area">
-                <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
-              </div>
-            )}
-            </div>
-            <div className="button-container">
-              <button onClick={downloadMarkdown}>Download README.md</button>
-              <button onClick={copyToClipboard}>Copy Markdown</button>
+              {activeTab === "markdown" ? (
+                <pre className="markdown-area">{generateMarkdown()}</pre>
+              ) : (
+                <div className="preview-area">
+                  <ReactMarkdown>{generateMarkdown()}</ReactMarkdown>
+                </div>
+              )}
             </div>
           </div>
         </div>
