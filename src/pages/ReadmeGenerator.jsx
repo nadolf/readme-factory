@@ -6,11 +6,19 @@ import { VscDebugRestart } from "react-icons/vsc";
 import GeneratorNav from "../components/GeneratorNav";
 
 export default function ReadmeGenerator() {
-  const [sections, setSections] = useState([{ type: "title", content: "Project Title" }]);
+  const [sections, setSections] = useState([
+    { type: "title", content: "Project Title" },
+  ]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("markdown");
 
-  const availableSections = ["description", "installation", "usage", "license", "contributing"];
+  const availableSections = [
+    "description",
+    "installation",
+    "usage",
+    "license",
+    "contributing",
+  ];
 
   const sectionTemplates = {
     description: "Provide a description of your project.",
@@ -22,19 +30,28 @@ export default function ReadmeGenerator() {
 
   const addSection = (sectionType) => {
     if (sections.find((section) => section.type === sectionType)) {
-      alert(`${sectionType.charAt(0).toUpperCase() + sectionType.slice(1)} section already added.`);
+      alert(
+        `${
+          sectionType.charAt(0).toUpperCase() + sectionType.slice(1)
+        } section already added.`
+      );
       return;
     }
-    const newSection = { type: sectionType, content: sectionTemplates[sectionType] || "" };
+    const newSection = {
+      type: sectionType,
+      content: sectionTemplates[sectionType] || "",
+    };
     setSections([...sections, newSection]);
     setIsDropdownVisible(false);
   };
 
-  const deleteSection = (index) => setSections(sections.filter((_, i) => i !== index));
+  const deleteSection = (index) =>
+    setSections(sections.filter((_, i) => i !== index));
 
   const resetSection = (index) => {
     const updatedSections = [...sections];
-    updatedSections[index].content = sectionTemplates[updatedSections[index].type] || "";
+    updatedSections[index].content =
+      sectionTemplates[updatedSections[index].type] || "";
     setSections(updatedSections);
   };
 
@@ -47,23 +64,34 @@ export default function ReadmeGenerator() {
   const moveSectionUp = (index) => {
     if (index === 0) return;
     const updatedSections = [...sections];
-    [updatedSections[index], updatedSections[index - 1]] = [updatedSections[index - 1], updatedSections[index]];
+    [updatedSections[index], updatedSections[index - 1]] = [
+      updatedSections[index - 1],
+      updatedSections[index],
+    ];
     setSections(updatedSections);
   };
 
   const moveSectionDown = (index) => {
     if (index === sections.length - 1) return;
     const updatedSections = [...sections];
-    [updatedSections[index], updatedSections[index + 1]] = [updatedSections[index + 1], updatedSections[index]];
+    [updatedSections[index], updatedSections[index + 1]] = [
+      updatedSections[index + 1],
+      updatedSections[index],
+    ];
     setSections(updatedSections);
   };
 
   const generateMarkdown = () => {
-    let markdown = `# ${sections.find((section) => section.type === "title")?.content || "My Project"}\n\n`;
+    let markdown = `# ${
+      sections.find((section) => section.type === "title")?.content ||
+      "My Project"
+    }\n\n`;
 
     sections.forEach((section) => {
       if (section.type !== "title") {
-        markdown += `## ${section.type.charAt(0).toUpperCase() + section.type.slice(1)}\n${section.content}\n\n`;
+        markdown += `## ${
+          section.type.charAt(0).toUpperCase() + section.type.slice(1)
+        }\n${section.content}\n\n`;
       }
     });
 
@@ -80,7 +108,9 @@ export default function ReadmeGenerator() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(generateMarkdown()).then(() => alert("Markdown copied to clipboard!"));
+    navigator.clipboard
+      .writeText(generateMarkdown())
+      .then(() => alert("Markdown copied to clipboard!"));
   };
 
   return (
@@ -90,16 +120,25 @@ export default function ReadmeGenerator() {
       <div className="generator-container">
         <div className="content-wrapper">
           <div className="sidebar">
-            <button className="add-button" onClick={() => setIsDropdownVisible(!isDropdownVisible)}>
+            <button
+              className="add-button"
+              onClick={() => setIsDropdownVisible(!isDropdownVisible)}
+            >
               <FaPlus size={30} />
             </button>
 
             {isDropdownVisible && (
               <div className="dropdown">
                 {availableSections
-                  .filter((section) => !sections.some((s) => s.type === section))
+                  .filter(
+                    (section) => !sections.some((s) => s.type === section)
+                  )
                   .map((section) => (
-                    <div key={section} onClick={() => addSection(section)} className="dropdown-option">
+                    <div
+                      key={section}
+                      onClick={() => addSection(section)}
+                      className="dropdown-option"
+                    >
                       {section.charAt(0).toUpperCase() + section.slice(1)}
                     </div>
                   ))}
@@ -110,22 +149,40 @@ export default function ReadmeGenerator() {
           <div className="sections-container">
             {sections.map((section, index) => (
               <div key={index} className="section-card">
-                <label>
+                <h3 className="section-label">
                   {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
-                  <textarea value={section.content} onChange={(e) => updateSection(index, e.target.value)} />
-                </label>
+                </h3>
+                <textarea
+                  className="section-textarea"
+                  value={section.content}
+                  onChange={(e) => updateSection(index, e.target.value)}
+                />
 
                 <div className="section-actions">
-                  <button onClick={() => resetSection(index)}>
+                  <button
+                    className="section-action-buttons"
+                    onClick={() => resetSection(index)}
+                  >
                     <VscDebugRestart />
                   </button>
-                  <button onClick={() => deleteSection(index)}>
+                  <button
+                    className="section-action-buttons"
+                    onClick={() => deleteSection(index)}
+                  >
                     <FaTrash />
                   </button>
-                  <button onClick={() => moveSectionUp(index)} disabled={index === 0}>
+                  <button
+                    className="section-action-buttons"
+                    onClick={() => moveSectionUp(index)}
+                    disabled={index === 0}
+                  >
                     <FaAngleUp />
                   </button>
-                  <button onClick={() => moveSectionDown(index)} disabled={index === sections.length - 1}>
+                  <button
+                    className="section-action-buttons"
+                    onClick={() => moveSectionDown(index)}
+                    disabled={index === sections.length - 1}
+                  >
                     <FaAngleDown />
                   </button>
                 </div>
@@ -135,10 +192,16 @@ export default function ReadmeGenerator() {
 
           <div className="preview-container">
             <div className="tabs">
-              <h3 className={activeTab === "markdown" ? "active-tab" : ""} onClick={() => setActiveTab("markdown")}>
+              <h3
+                className={activeTab === "markdown" ? "active-tab" : ""}
+                onClick={() => setActiveTab("markdown")}
+              >
                 Markdown
               </h3>
-              <h3 className={activeTab === "preview" ? "active-tab" : ""} onClick={() => setActiveTab("preview")}>
+              <h3
+                className={activeTab === "preview" ? "active-tab" : ""}
+                onClick={() => setActiveTab("preview")}
+              >
                 Preview
               </h3>
             </div>
