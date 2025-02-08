@@ -7,25 +7,29 @@ import GeneratorNav from "../components/GeneratorNav";
 
 export default function ReadmeGenerator() {
   const [sections, setSections] = useState([
-    { type: "title", content: "Project Title" },
+    { type: "Title & Description", content: "Project Title\nDescription Here" },
   ]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("markdown");
 
   const availableSections = [
-    "description",
-    "installation",
-    "usage",
-    "license",
-    "contributing",
+    "Tech",
+    "Features",
+    "Installation",
+    "Usage",
+    "Badges",
+    "Contributing",
+    "License"
   ];
 
   const sectionTemplates = {
-    description: "Provide a description of your project.",
-    installation: "Provide installation instructions.",
-    usage: "Provide usage instructions.",
-    license: "Specify the license for your project.",
-    contributing: "Describe how others can contribute to your project.",
+    Tech: "**Frontend:** React.js, TailwindCSS\n\n**Backend:** Node.js, Express.js\n\n**Database:** MongoDB\n\n**Other Technologies:**\n- Firebase\n- Docker\n- AWS  ",
+    Features: "- Feature 1\n- Feature 2\n- Feature 3",
+    Installation: "### Prerequisites\n- Requirement 1\n- Requirement 2\n\n### Steps\n1. Clone the repo:\n```sh\ngit clone https://github.com/your-username/project-name.git\n```\n2. Navigate to the project folder:\n```sh\ncd project-name\n```\n3. Install dependencies:\n```sh\nnpm install  # or pip install -r requirements.txt\n```\n4. Run the project:\n```sh\nnpm start",
+    Usage: "Provide usage instructions\n\n```npm install```",
+    Badges: "Add badges here:\n\n[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)\n\n[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)\n\n[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)",
+    Contributing: "Describe how others can contribute to your project.",
+    License: "Specify the license for your project.",
   };
 
   const addSection = (sectionType) => {
@@ -83,12 +87,12 @@ export default function ReadmeGenerator() {
 
   const generateMarkdown = () => {
     let markdown = `# ${
-      sections.find((section) => section.type === "title")?.content ||
-      "My Project"
+      sections.find((section) => section.type === "Title & Description")
+        ?.content || "My Project"
     }\n\n`;
 
     sections.forEach((section) => {
-      if (section.type !== "title") {
+      if (section.type !== "Title & Description") {
         markdown += `## ${
           section.type.charAt(0).toUpperCase() + section.type.slice(1)
         }\n${section.content}\n\n`;
