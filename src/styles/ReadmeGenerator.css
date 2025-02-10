@@ -111,7 +111,11 @@ button.section-action-buttons {
   font-size: 18px;
   border: solid 1px rgb(192, 190, 190);
   box-sizing: border-box;
-  resize: vertical;
+  resize: none;
+}
+
+.section-textarea.dark {
+  color: #fff;
 }
 
 .preview-container {

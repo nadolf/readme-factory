@@ -4,11 +4,22 @@ import ReactMarkdown from "react-markdown";
 import { FaPlus, FaTrash, FaAngleUp, FaAngleDown } from "react-icons/fa6";
 import { VscDebugRestart } from "react-icons/vsc";
 import GeneratorNav from "../components/GeneratorNav";
+import { useMode } from "../components/ModeContext";
 
 export default function ReadmeGenerator() {
+  const { mode } = useMode();
   const [sections, setSections] = useState([
     { type: "Title & Description", content: "Project Title\nDescription Here" },
   ]);
+  const [value, setValue] = useState('');
+
+  const handleInput = (event) => {
+    const textarea = event.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+    setValue(event.target.value);
+  };
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("markdown");
 
@@ -159,7 +170,8 @@ export default function ReadmeGenerator() {
                   {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
                 </h3>
                 <textarea
-                  className="section-textarea"
+                  className={`section-textarea ${mode}`}
+                  onInput={handleInput}
                   value={section.content}
                   onChange={(e) => updateSection(index, e.target.value)}
                 />
