@@ -19,15 +19,17 @@ export default function ReadmeGenerator() {
     "Usage",
     "Badges",
     "Contributing",
-    "License"
+    "License",
   ];
 
   const sectionTemplates = {
     Tech: "**Frontend:** React.js, TailwindCSS\n\n**Backend:** Node.js, Express.js\n\n**Database:** MongoDB\n\n**Other Technologies:**\n- Firebase\n- Docker\n- AWS  ",
     Features: "- Feature 1\n- Feature 2\n- Feature 3",
-    Installation: "### Prerequisites\n- Requirement 1\n- Requirement 2\n\n### Steps\n1. Clone the repo:\n```sh\ngit clone https://github.com/your-username/project-name.git\n```\n2. Navigate to the project folder:\n```sh\ncd project-name\n```\n3. Install dependencies:\n```sh\nnpm install  # or pip install -r requirements.txt\n```\n4. Run the project:\n```sh\nnpm start",
+    Installation:
+      "### Prerequisites\n- Requirement 1\n- Requirement 2\n\n### Steps\n1. Clone the repo:\n```sh\ngit clone https://github.com/your-username/project-name.git\n```\n2. Navigate to the project folder:\n```sh\ncd project-name\n```\n3. Install dependencies:\n```sh\nnpm install  # or pip install -r requirements.txt\n```\n4. Run the project:\n```sh\nnpm start",
     Usage: "Provide usage instructions\n\n```npm install```",
-    Badges: "Add badges here:\n\n[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)\n\n[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)\n\n[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)",
+    Badges:
+      "Add badges here:\n\n[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)\n\n[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)\n\n[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)",
     Contributing: "Describe how others can contribute to your project.",
     License: "Specify the license for your project.",
   };
