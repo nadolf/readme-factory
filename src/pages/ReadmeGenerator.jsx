@@ -9,7 +9,7 @@ import { useMode } from "../components/ModeContext";
 export default function ReadmeGenerator() {
   const { mode } = useMode();
   const [sections, setSections] = useState([
-    { type: "Title & Description", content: "Project Title\nDescription Here" },
+    { type: "Title & Description", content: "Project Title\nA description of your project" },
   ]);
   const [value, setValue] = useState('');
 
@@ -42,7 +42,7 @@ export default function ReadmeGenerator() {
     Badges:
       "Add badges here:\n\n[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)\n\n[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)\n\n[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)",
     Contributing: "Describe how others can contribute to your project.",
-    License: "Specify the license for your project.",
+    License: "Specify the license for your project\n\n[MIT](https://choosealicense.com/licenses/mit/)",
   };
 
   const addSection = (sectionType) => {
@@ -145,7 +145,7 @@ export default function ReadmeGenerator() {
             </button>
 
             {isDropdownVisible && (
-              <div className="dropdown">
+              <div className={`dropdown ${mode}`}>
                 {availableSections
                   .filter(
                     (section) => !sections.some((s) => s.type === section)
@@ -154,7 +154,7 @@ export default function ReadmeGenerator() {
                     <div
                       key={section}
                       onClick={() => addSection(section)}
-                      className="dropdown-option"
+                      className={`dropdown-option ${mode}`}
                     >
                       {section.charAt(0).toUpperCase() + section.slice(1)}
                     </div>
